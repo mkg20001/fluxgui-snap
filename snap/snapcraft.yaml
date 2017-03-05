@@ -1,0 +1,46 @@
+name: fluxgui
+version: '0.1' # just for humans, typically '1.2+git' or '1.3.2'
+summary: Single-line elevator pitch for your amazing snap # 79 char long summary
+description: |
+  This is my-snap's description. You have a paragraph or two to tell the
+  most important story about your snap. Keep it under 100 words though,
+  we live in tweetspace and your description wants to look good in the snap
+  store.
+
+apps:
+  fluxgui:
+    command: bin/fluxgui #bin/preload $SNAP/usr/bin/python2 $SNAP/bin/fluxgui #bin/preload $SNAP/bin/fluxgui does not work...
+    plugs: [x11,unity7,opengl,dbus]
+
+slots:
+  session-dbus-interface:
+    bus: org.gnome.GConf.Server
+    interface: dbus
+    name: org.gnome.GConf.Client
+
+grade: stable
+confinement: strict
+
+parts:
+  xflux:
+    plugin: dump
+    source: https://justgetflux.com/linux/xflux64.tgz
+    organize:
+      xflux: bin/xflux
+  xflux-gui:
+    source: https://github.com/xflux-gui/xflux-gui
+    source-type: git
+    after:
+      - preload
+      - desktop/gtk2
+    source-branch: master
+    plugin: python
+    python-version: "python2"
+    stage-packages:
+      - python-appindicator
+      - python-xdg
+      - python-pexpect
+      - python-gconf
+      - python-gtk2
+      - python-glade2
+      - libxxf86vm1
