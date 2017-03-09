@@ -39,10 +39,25 @@ confinement: strict
 
 parts:
   xflux:
+    after:
+      - xflux32
+      - xflux64
+    plugin: dump
+    source: snap/scripts
+    organize:
+      xflux.sh: bin/xflux
+  xflux64:
     plugin: dump
     source: https://justgetflux.com/linux/xflux64.tgz
+    prepare: mv xflux xflux64
     organize:
-      xflux: bin/xflux
+      xflux64: bin/xflux64
+  xflux32:
+    plugin: dump
+    source: https://justgetflux.com/linux/xflux-pre.tgz
+    prepare: mv xflux xflux32
+    organize:
+      xflux32: bin/xflux32
   xflux-gui:
     source: https://github.com/xflux-gui/xflux-gui
     source-type: git

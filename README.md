@@ -18,3 +18,4 @@ Instead use `fluxgui.xflux` to run xflux directly.
 ## ToDo
  - [ ] ~~Compile xflux from the source~~ (currently isn't open source)
  - [ ] Fix dbus
+ - [ ] Multi-arch (use a script to detect right binary, and if qemu needs to be used)
