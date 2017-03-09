@@ -10,13 +10,24 @@ description: |
 apps:
   fluxgui:
     command: bin/fluxgui #bin/preload $SNAP/usr/bin/python2 $SNAP/bin/fluxgui #bin/preload $SNAP/bin/fluxgui does not work...
-    plugs: [x11,unity7,opengl,dbus]
+    plugs:
+      - x11
+      - unity7
+      - opengl
+  xflux:
+    command: bin/xflux
+
+plugs:
+  dbus:
+    bus: session
+    interface: dbus
+    name: org.xflux.gui
 
 slots:
   session-dbus-interface:
-    bus: org.gnome.GConf.Server
+    bus: session
     interface: dbus
-    name: org.gnome.GConf.Client
+    name: org.xflux.gui
 
 grade: stable
 confinement: strict
@@ -30,9 +41,11 @@ parts:
   xflux-gui:
     source: https://github.com/xflux-gui/xflux-gui
     source-type: git
+    prepare:
+      git am ../../../snap/*.patch
     after:
       - preload
-      - desktop/gtk2
+      - desktop-gtk2
     source-branch: master
     plugin: python
     python-version: "python2"

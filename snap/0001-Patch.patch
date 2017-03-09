@@ -1,0 +1,51 @@
+From 6d6c87a6f92d4de8e7b49a6a9b7b71be52bf75db Mon Sep 17 00:00:00 2001
+From: mkg20001 <mkg20001@gmail.com>
+Date: Thu, 9 Mar 2017 18:50:20 +0100
+Subject: [PATCH] Patch
+
+---
+ src/fluxgui/fluxapp.py | 14 +++++++++-----
+ 1 file changed, 9 insertions(+), 5 deletions(-)
+
+diff --git a/src/fluxgui/fluxapp.py b/src/fluxgui/fluxapp.py
+index 0e51daf..c9bca09 100755
+--- a/src/fluxgui/fluxapp.py
++++ b/src/fluxgui/fluxapp.py
+@@ -14,6 +14,7 @@ class FluxGUI(object):
+     FluxGUI initializes/destroys the app
+     """
+     def __init__(self):
++        self.initialized = False
+         try:
+             self.settings = settings.Settings()
+             self.xflux_controller = fluxcontroller.FluxController(self.settings)
+@@ -27,6 +28,8 @@ class FluxGUI(object):
+             print "Critical error. Exiting."
+             self.exit(1)
+ 
++        self.initialized = True
++
+     def __del__(self):
+         self.exit()
+ 
+@@ -39,11 +42,12 @@ class FluxGUI(object):
+         self.exit()
+ 
+     def exit(self, code=0):
+-        try:
+-            self.xflux_controller.stop()
+-        except MethodUnavailableError:
+-            pass
+-        gtk.main_quit()
++        if self.initialized:
++            try:
++                self.xflux_controller.stop()
++            except MethodUnavailableError:
++                pass
++            gtk.main_quit()
+         sys.exit(code)
+ 
+     def run(self):
+-- 
+2.7.4
+
