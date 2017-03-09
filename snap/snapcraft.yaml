@@ -16,6 +16,8 @@ apps:
       - opengl
   xflux:
     command: bin/xflux
+    plugs:
+      - x11
 
 plugs:
   dbus:
